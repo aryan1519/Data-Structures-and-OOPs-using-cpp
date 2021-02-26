@@ -1,0 +1,96 @@
+In our fraction class we added fraction1 to fraction2 and stored the sum in fraction1
+
+class Fraction
+{
+  private :
+    int numerator ;
+    int denominator ;
+
+  public:
+
+    // constructor minimized
+    Fraction(int numerator,int denominator)
+    {
+      this->numerator = numerator;
+      this->denominator = denominator;
+    }
+
+    // simplify function minimized
+    void simplify()
+    {
+      int hcf =1;
+      int h = min(this->numerator,this->denominator);
+
+      for(int i=1;i<=h;i++)
+      {
+        if(this->numerator %i ==0 && this->denominator %i == 0)
+        {
+          hcf = i;
+        }
+      }
+      numerator = numerator/hcf;
+      denominator = denominator/hcf;
+    }
+
+    void add(const Fraction &f2)
+    {
+    int sum = (this->numerator*f2.denominator)  + ((this->denominator*f2.numerator))
+    int den = this->denominator*f2.denominator;
+
+    numerator = sum;
+    denominator = den;
+
+    simplify();
+    }
+
+};
+
+///////////////////////////////////////////////////
+
+Now we may want to store the sum in a new variable.
+
+Also now we are using add function to add the two fractions
+
+We may want to use the '+' operator.
+
+Current its not possible. We cannot do f1+f2.
+
+To do this we make use of operaot overloading
+
+we replace the name of the current function with "operator" word followed by the operator we want to use without any space
+
+
+Eg
+we will use operator overloading in the add fucntion.
+we will also create a new fraction store the sum in it and return the new fraction. Hence the return type is also a Fractiion class object.
+
+
+Fraction operator+(Fraction const &f2)
+{
+int sum = (this->numerator*f2.denominator)  + ((this->denominator*f2.numerator));
+int den = this->denominator*f2.denominator;
+
+Fraction fnew(sum,den);
+
+fnew.simply();                    //if we write simply() alone it will mean 'this' simplify so we need to be careful
+
+}
+
+
+
+
+
+
+The add function does not make an changes in the any members or functions so it is a constant function and we can
+write the constant keyword.
+
+
+Fraction operator+(Fraction const &f2) const{
+int sum = (this->numerator*f2.denominator)  + ((this->denominator*f2.numerator));
+int den = this->denominator*f2.denominator;
+
+Fraction fnew(sum,den);
+
+fnew.simply();                    //if we write simply() alone it will mean 'this' simplify so we need to be careful
+
+}

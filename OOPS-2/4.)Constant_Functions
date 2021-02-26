@@ -1,0 +1,194 @@
+If for our class we want to create a constant object we can do it just as we do for any variable
+eg
+
+Student const s1;
+
+or
+
+ const Studentt s1;
+
+
+ Now for this object we cannot change any of its properties/members.
+
+ Now consider the Fraction class from before.
+ getter and setter functions have been added to get and set the numerator and denominator.
+
+ class Fraction {
+	private :
+
+		int numerator;
+		int denominator;
+
+	public :
+
+		Fraction() {
+
+		}
+
+		Fraction(int numerator, int denominator) {
+			this -> numerator = numerator;
+			this -> denominator = denominator;
+		}
+
+		int getNumerator() {
+			return numerator;
+		}
+
+		int getDenominator()  {
+			return denominator;
+		}
+
+		void setNumerator(int n) {
+			numerator = n;
+		}
+
+		void setDenominator(int d) {
+			denominator = d;
+		}
+
+		void print()  {
+			cout << this -> numerator << " / " << denominator << endl;
+		}
+
+		void simplify() {
+			int gcd = 1;
+			int j = min(this -> numerator, this -> denominator);
+			for(int i = 1; i <= j; i++) {
+				if(this -> numerator % i == 0 && this -> denominator % i == 0) {
+					gcd = i;
+				}
+			}
+			this -> numerator = this -> numerator / gcd;
+			this -> denominator = this -> denominator / gcd;
+		}
+
+		void add(Fraction const &f2) {
+			int lcm = denominator * f2.denominator;
+			int x = lcm / denominator;
+			int y = lcm / f2.denominator;
+
+			int num = x * numerator + (y * f2.numerator);
+
+			numerator = num;
+			denominator = lcm;
+			simplify();
+		}
+
+		void multiply(Fraction const &f2) {
+			numerator = numerator * f2.numerator;
+			denominator = denominator * f2.denominator;
+
+			simplify();
+		}
+
+};
+
+
+Now lets say we we create a constant object for this class
+
+const Fraction f1;
+
+now lets say we want to print the numerator and denominator
+both of these are private so we need to use getter functions of the class.
+
+Now since the object is private no changes are allowed.
+
+So if we use the setter function we must get an error and so it happens.
+
+But the getter function makes no changes to an member of the class
+
+But if we use it we still get an error as the compiler doesnt allow such risks
+as the getter function may make us of some other function which may make changes.
+
+So we need to tell the compiler ourselves that that the function doesnt make an changes.
+
+So we make us of constant fucntions.
+
+To make a constant function we just do the following
+
+eg
+ void func1() const
+ {
+
+ }
+
+
+ Now we make this change in our getter function and we wont get an error.
+
+ If we also make this change in our setter function we will get an error in the line
+ inside the function where we make changes.
+
+ SO IDEALLY IF ANY OF OUR FUNCTIONS DOES NOT MAKE CHANGES TO A CLASS MEMBER
+ WE MUST MAKE THEM AS CONSTANT FUNCTIONS.
+
+ Thus the Fraction class can be rewritten as follows:-
+
+ class Fraction {
+ 	private :
+
+ 		int numerator;
+ 		int denominator;
+
+ 	public :
+
+ 		Fraction() {
+
+ 		}
+
+ 		Fraction(int numerator, int denominator) {
+ 			this -> numerator = numerator;
+ 			this -> denominator = denominator;
+ 		}
+
+ 		int getNumerator() const {
+ 			return numerator;
+ 		}
+
+ 		int getDenominator() const {
+ 			return denominator;
+ 		}
+
+ 		void setNumerator(int n) {
+ 			numerator = n;
+ 		}
+
+ 		void setDenominator(int d) {
+ 			denominator = d;
+ 		}
+
+ 		void print() const {
+ 			cout << this -> numerator << " / " << denominator << endl;
+ 		}
+
+ 		void simplify() {
+ 			int gcd = 1;
+ 			int j = min(this -> numerator, this -> denominator);
+ 			for(int i = 1; i <= j; i++) {
+ 				if(this -> numerator % i == 0 && this -> denominator % i == 0) {
+ 					gcd = i;
+ 				}
+ 			}
+ 			this -> numerator = this -> numerator / gcd;
+ 			this -> denominator = this -> denominator / gcd;
+ 		}
+
+ 		void add(Fraction const &f2) {
+ 			int lcm = denominator * f2.denominator;
+ 			int x = lcm / denominator;
+ 			int y = lcm / f2.denominator;
+
+ 			int num = x * numerator + (y * f2.numerator);
+
+ 			numerator = num;
+ 			denominator = lcm;
+ 			simplify();
+ 		}
+
+ 		void multiply(Fraction const &f2) {
+ 			numerator = numerator * f2.numerator;
+ 			denominator = denominator * f2.denominator;
+
+ 			simplify();
+ 		}
+
+ };

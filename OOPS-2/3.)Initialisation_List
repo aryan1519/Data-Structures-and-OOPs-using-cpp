@@ -1,0 +1,111 @@
+When in our class we want to make an element constant or we want to make a reference in our class
+we encounter some problems
+
+when we create an obect we want to give certain values
+
+but with constants and references we encounter some problems because
+
+eg
+int const a = 5;
+
+// the above makes a constant variable a with value 5
+
+int const a;
+a= 5 ;
+
+// the above is not possible and results in an error.
+// this is because when we create const a a garbage value is given to it and then
+// later it cannot be changed as it is a constant.
+// We get an error in the first line itself and we cannnot create a const variable and not initialize it.
+//
+// Similarly for refernces we cannot do
+
+int &j;
+j=i;
+
+// We can do
+int &j = i;
+
+////////////////////////////////////////////////
+
+Now consider the following class
+
+
+class Student()
+{
+public :
+  int age;
+  const int rollNumber;
+
+};
+
+
+Now lets say we create an object in main
+
+Student s1;
+s1.age = 20;
+s1.rollNumber = 101;
+
+// This isnt possible as rollNumber is a constant variable and when we make the object the default
+// constructor is called which initializes both age and rollNumber to garbage values and since rollNumber is
+// a constant we cannot change it now.
+// we get an error in the first line itself i.e. while creating the object.
+//
+// So we need to make our own constructor which can initialize value according to us
+
+class Student()
+{
+public :
+  int age;
+  const int rollNumber;
+
+  Student(int r)
+  {
+  rollNumber = r;
+  }
+
+};
+
+
+now in the above also well get an eror
+
+notice we wrote rollNumber = r and we didnt have to specify int
+this means that it has already been created and has some garbage values.
+again overwriting of constant is not possible.
+
+
+  So to initialize constant variables and references well have to use something knwon
+  as initialization lists.
+
+
+  class Student()
+  {
+  public :
+    int age;
+    const int rollNumber;
+
+    Student(int r,int age) : rollNumber(r),age(age)   //we dont need to specify 'this'
+    {
+
+    }
+
+  };
+
+  Now lets say we wnat to also create a refernce variable to age in our class
+
+  class Student()
+  {
+  public :
+    int age;
+    const int rollNumber;
+    int &x;
+
+    Student(int r,int age) : rollNumber(r),age(age),x(this->age)   //we need to specify 'this' as we want to give the stored value and not the argument
+    {
+
+    }
+
+  };
+
+
+// So in case of constant members and referemces in a class we need to make our constructor with ini list

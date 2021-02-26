@@ -1,0 +1,133 @@
+The inbuilt copy constructor has a disadvantage.
+if we create a constructor and it takes name with deep copy still we we see that it may get changed due to some reason.
+eg
+consider the following class
+
+class Student {
+	int age;
+
+	public :
+
+	char *name;
+
+	Student(int age, char *name) {
+		this -> age = age;
+
+
+		// Deep copy
+		this -> name = new char[strlen(name) + 1];
+		strcpy(this -> name, name);
+
+	}
+
+
+	void display() {
+		cout << name << " " << age << endl;
+	}
+};
+
+now if we create and object and create another object and use the inbuilt copy constructor.
+
+#include <iostream>
+using namespace std;
+#include "Student.cpp"
+
+int main() {
+	char name[] = "abcd";
+	Student s1(20, name);
+	s1.display();
+
+	Student s2(s1);
+
+	s2.name[0] = 'x';
+	s1.display();
+	s2.display();
+
+return 0;
+
+}
+
+we see that s1 is given age=20 and name= abcd //here name stores the memory location of address where we copy the input argument name
+then we print s1 and we get the expected output of
+20 abcd
+
+but then we create s2 with the same properties as s1
+now s2 has age=20 and name = abcd //here name stores the memory location of address where we copy the
+                                  //input argument name same address as name for s1
+then we change name[0] = 'x'
+
+now we see on printing s1 and s2 both give age = 20 and name = abcx.
+this is because even though while object creation we used deep copy but the copy constructor gave the same memory address
+to name of s2 and did a shallow copy
+
+this needs to be avoided and thus we create our own copy constructor.
+
+
+when we make an object using a copy constructor we do it as follows:-
+
+Student s2(s1);
+
+so the default copy constructor looks like this:-
+
+Student(Student s)
+{
+this->age = s.age;
+this->name = s.name;
+}
+
+//this results in shallow copy
+
+creating our own copy constructor that follows deep copy(IMPORTANT:the below is the concept and wont work read after it too.)
+
+Student(Student s)
+{
+this->age = s.age;
+
+
+this->name = new char[strlen(s.name)+1];
+
+strcpy(this->name,s.name);
+}
+
+// the above results in a deep copy
+
+IMPORTANT
+The above solves the problem of shallow copy but creates a problem
+we know in out constructor
+Student(Student s)
+{
+
+}
+
+//this is pass by value i.e. whatever object we pass in this function in main it goes to the function the function
+//creates a new variable s and stores the value in it.
+//now to copy it uses the copy constructor and since we have made a copy constructor ourselves the default copy
+//constructor doesnt exist and our copy constructor will be called. now again it asks to copy (since pass by value)
+// and again our copy constructor is called. This creates an infinite loop.
+
+This problem can be avoided by passing by reference.
+
+now on passing by reference :-
+
+Student(Student &s)
+{
+
+}
+
+we now know that whatever is the argument in main is now not passed but the function creates a reference variable
+which points towards this variable in the main. Hence no copy is created.
+But not this variable in the main can be changed both by changing it in main and also by making changes through this
+reference variable and hence we need to make the reference variable constant to prevent it from making changes
+in the variable in main.
+
+So our final copy constructor is as follows:-
+
+Student(Student const &s)
+{
+this->age = s.age;
+
+
+this->name = new char[strlen(s.name)+1];
+
+strcpy(this->name,s.name);
+}

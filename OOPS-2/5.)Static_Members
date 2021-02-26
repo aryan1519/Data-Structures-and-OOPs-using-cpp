@@ -1,0 +1,130 @@
+There are some properties of a class which may not be distinct for each member of the class
+eg
+The total no of students in a class .
+So we do not need to have this as the property of an object.
+
+But this is an important property of the class and hence needs to be part of the class.
+
+So in such cases we can make these members as static members.
+
+The static members are not created for each object and also need to be accessed using the class.
+
+class Student {
+
+// total number of students present
+
+	public :
+
+	int rollNumber;
+	int age;
+
+	static int totalStudents;
+
+};
+
+
+to access a static member we need to use the scope resolution operator i.e. ::
+
+we should also initialize our static member and that is done outside the class
+
+
+class Student {
+
+
+	public :
+
+	int rollNumber;
+	int age;
+
+  static int totalStudents;		// total number of students present
+
+};
+
+int Student :: totalStudents = 0;	// initialze static data members
+
+
+////////////
+
+Now in the main we can access this static member directly using the class as it isnt made for each object. We do as follows:-
+
+cout<< Student :: totalStudents <<endl;
+
+A bad practice is that we can do the above using objects too
+
+cout << s1.totalStudents <<ednl;
+
+
+// the above shouldnt be done and we must directly use the class.
+
+/////////////////////
+Now lets say for our Student class we need to keep track of total no of students i.e. changing the value as soon as an object is created.
+
+We can easily do it using the a constructor
+
+class Student {
+	static int totalStudents;		// total number of students present
+
+	public :
+
+	int rollNumber;
+	int age;
+
+
+	Student() {
+		totalStudents++;    // As soon as an  object is created totalStudents increases by 1
+	}
+
+
+};
+
+int Student :: totalStudents = 0;
+
+
+///////////////////////////////////////
+
+We can also make static functions
+
+Lets say there is a function which is not needed for each student so we can make it static.
+
+eg
+
+lets say here we have a function getTotalStudents()
+we can make it static
+
+
+class Student {
+	static int totalStudents;		// total number of students present
+
+	public :
+
+	int rollNumber;
+	int age;
+
+
+	Student() {
+		totalStudents++;
+	}
+
+	static int getTotalStudent() {
+		return totalStudents;
+	}
+
+};
+
+int Student :: totalStudents = 0;
+
+///////////////////
+
+To use the static functions again we directly make use of our class.
+
+cout<< Student :: getTotalStudent() <<endl;
+
+
+//////////////////////
+
+IMPORTANT
+
+1.)Static functions can accesses only static members of the class be it data-members/other functions.
+Non-static members are cannot be accessed
+
+2.) Static functions cannot use this pointer for as it is not specific to an object

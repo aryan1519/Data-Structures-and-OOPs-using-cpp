@@ -1,0 +1,77 @@
+
+SHALLOW AND DEEP COPY
+
+//Consider the following class
+
+class Student {
+	int age;
+	char *name;
+
+	public :
+
+	Student(int age, char *name) {
+		this -> age = age;
+		// Shallow copy
+		this -> name = name;
+
+
+	}
+
+	void display() {
+		cout << name << " " << age << endl;
+	}
+};
+
+//now when we create objects as follows:-
+
+int main() {
+	char name[] = "abcd";
+	Student s1(20, name);
+	s1.display();
+
+	name[3] = 'e';
+	Student s2(24, name);
+	s2.display();
+
+	s1.display();
+
+
+}
+
+we ideally expect that s1 gets name = abcd and age = 20 and s2 get name = abce and age 24
+but we see that s1 gets name = abce and s2 also gets name = abce
+
+the reason is our constructor this->name = name
+Here since name is a character array it stores the memory address of the first element.
+so while making s1 we store abcd but when s2 is created it accesses the same memory address and changes the value of name
+
+now when we call the display function it accesses the memory address and creates this problem.
+
+This is known as shallow copy.
+
+To avoid this we use deep copy.
+
+in deep copy in our constructor we in this->name we create a new array character array and copy the content of the
+input name in this new character array.
+
+so we can make our class as follows:-
+
+class Student {
+	int age;
+	char *name;
+
+	public :
+
+	Student(int age, char *name) {
+		this -> age = age;
+
+		// Deep copy
+		this -> name = new char[strlen(name) + 1];
+		strcpy(this -> name, name);
+
+	}
+
+	void display() {
+		cout << name << " " << age << endl;
+	}
+};
