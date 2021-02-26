@@ -1,0 +1,13 @@
+Length of LL recursively
+
+int length(Node *head)
+{
+  if(head == NULL)
+    return 0;
+
+  return length(head->next)+1;
+}
+
+//////////////////////////////////////
+
+Insertion of node recursively
